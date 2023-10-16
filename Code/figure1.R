@@ -1,6 +1,8 @@
 # Create map of Rouse with plants colored by linalool phenotype ####
 # Haley Carter
 
+# This code creates panel B of figure 1, panel A was created in illustrator.
+
 # libraries
 library(tidyverse)
 library(sf)
@@ -10,12 +12,14 @@ library(ggspatial)
 library(maps)
 library(mapdata)
 
+setwd("~/Documents/GitHub/pollen_dispersal_and_floral_scent/")
+
 # read in data ####
 corridor_scent <- read.csv("Data/scent_data.csv")
 corridor_morph <- read.csv("Data/morph_data.csv")
-
 by_maternal <- read.csv("Data/by_maternal.csv")
 by_offspring <- read.csv("Data/by_offspring.csv")
+
 # remove offspring without paternal chemotypes
 by_offspring <- by_offspring[!is.na(by_offspring$patchem),]
 # rename offspring column

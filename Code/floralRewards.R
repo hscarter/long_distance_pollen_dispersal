@@ -1,4 +1,5 @@
-# nectar test
+# Mixed effects models of floral rewards ####
+# Haley Carter
 
 # file paths ####
 scent_data <- "Data/scent_data.csv"
@@ -22,33 +23,10 @@ all.floral <- left_join(select(corridor_morph, Name, site, floral.flare, filimen
 all.floral <- na.omit(all.floral)
 all.floral$site <- as.factor(all.floral$site)
 all.floral<- all.floral %>% 
-  mutate(chemotype = recode(linalool_phenotype,
-                            "high" = "1",
-                            "low" = "1",
-                            "none" = "0"))
-
-# plots (figure 4) ####
-
-sucrose<-ggplot(all.floral, aes(chemotype,
-                       sucrose.equiv.))+
-  geom_boxplot()+
-  geom_jitter(color="darkgrey", width=0.3)+
-  stat_summary(fun=mean,color="black", shape=21)+
-  theme_minimal()+
-  labs(x="Linalool chemotype",
-       y="Sucrose equivalency")+
-  facet_grid(cols=vars(site))
-nectar<- ggplot(all.floral, aes(chemotype,
-                       nectar.length))+
-  geom_boxplot()+
-  geom_jitter(color="darkgrey", width=0.3)+
-  stat_summary(fun=mean,color="black", shape=21)+
-  theme_minimal()+
-  labs(x="",
-       y="Amount of nectar (mm)")+
-  facet_grid(cols=vars(site))
-ggarrange(nectar, sucrose, nrow=2)
-ggsave("/Users/haley/Documents/GradSchool/Dissertation/Chapter1Mating/Figures/figures/figure4.jpg")
+  mutate(chemotype = case_match(linalool_phenotype,
+                            "high" ~ "1",
+                            "low" ~ "1",
+                            "none" ~ "0"))
                     
 # mixed effect models ####                   
 mixNecLin <- lmer(nectar.length~chemotype + (1 | site), data = all.floral)
