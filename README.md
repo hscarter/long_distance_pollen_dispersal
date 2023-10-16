@@ -1,6 +1,7 @@
 # Data and code for Annals of Botany manuscript
 Haley Carter
 
+This repository houses data and code associated with the manuscript "Extensive long-distance pollen dispersal and the influence of floral traits on realized mating events in a hawkmoth-pollinated plant" by Haley S. Carter, Robert A. Raguso, Jeremie B. Fant, Maria Sol Balbuena, Geoffrey T. Broadhead, and Krissa A. Skogen.
 
 # Data
 * by\_maternal.csv Dataset S1: All mating pairs with number of offspring and linalool chemotype information for both parental individuals. 
