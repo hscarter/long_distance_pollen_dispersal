@@ -16,14 +16,15 @@ Haley Carter
 * planted\_mortality\_F2.csv Dataset S9: Seedling survival data from the F2 generation.
 * scent\_data.csv Dataset S10: Floral scent data for all 205 potential parental individuals from the field populations.
 * wind\_tunnel.xlsx Dataset S13: Data from the behavioral assays with Hyles lineata.
+
 # Code files
-* anosim.R
-* betweenPopulations.R
-* bootstrapping\_frequencies\_figure3.R
-* distance\_figure5.R
-* Figure\_S2.R
-* figure1.R
-* figure2.R
-* floralRegressions\_figure4.R
-* floralRewards.R
-* germinationF2.R
+* anosim.R - Analysis of similarities in floral trait data between chemotypes and between populations. 
+* betweenPopulations.R - Frequency of between population mating events overall and by chemo- and phenotypes.
+* bootstrapping\_frequencies\_figure3.R - Calculates 95% confidence intervals surrounding observed mating frequencies, calculates expected frequencies given germination and survival rates, and produces figure 3.
+* distance\_figure5.R - Geographic clustering analysis and figure 5.
+* Figure\_S2.R - Hyles behavioral supplement code and figures.
+* figure1.R - Code for panel B of figure 1.
+* figure2.R - Code for all panels of figure 2.
+* floralRegressions\_figure4.R - Analysis of assortative mating by floral morphology and figure 4. 
+* floralRewards.R - Mixed effect models of floral rewards (nectar and sucrose).
+* germinationF2.R - Germination and seedling survival rates between and within chemotype crosses from F2 greenhouse generation.
