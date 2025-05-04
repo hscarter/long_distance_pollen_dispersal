@@ -20,7 +20,7 @@ This repository houses data and code associated with the manuscript
 * anosim.R - Analysis of similarities in floral trait data between chemotypes and between populations. 
 * betweenPopulations.R - Frequency of between population mating events overall and by chemo- and phenotypes.
 * distance.R - Calculating distances between mating pairs and all plants in Rouse.
-* figure3.R - Hyles behavioral supplement code and figures.
+* figure3.R - Hyles behavioral code and figures.
 * figure1.R - Code for panel B of figure 1.
 * figure2.R - Code for all panels of figure 2.
 * floralRewards.R - Mixed effect models of floral rewards (nectar and sucrose).
