@@ -1,5 +1,11 @@
-# Summarise pollen dispersal distances between populations and create figure 5 ####
+# Calculate distances between plants and mating pairs ####
 # Haley Carter
+
+# note this code also includes some explorating of mating distances
+# by chemotype which was not included in the manuscript
+
+# the rouse distance matrix created starting in line 108 was used to determine
+# nearest neighbors and to manually count mating frequency btw neighbors
 
 # libraries
 library(tidyverse)
@@ -9,7 +15,7 @@ library(car)
 library(ggalluvial)
 library(ggpubr)
 
-setwd("~/Documents/GitHub/pollen_dispersal_and_floral_scent/")
+setwd("~/Documents/DispersalPaper/long_distance_pollen_dispersal/")
 
 # data ####
 corridorData <- read.csv("Data/morph_data.csv")
@@ -55,6 +61,7 @@ ave_all <- dist_num %>%
 std_all <- dist_num %>% 
   summarise(across(3:last_col(), sd)) %>% 
   t()
+
 # between chemotypes
 lin_dist <- dist_num %>% 
   group_by(chemotype) %>% 
@@ -73,47 +80,15 @@ dist_df <- corridor %>%
   select(Name, site, chemotype)
 dist_df <- cbind(dist_df, ave_all, std_all, lin_dist, lin_std)
 names(dist_df) <- c("Name", "site", "chemotype", "ave_dist", "std_dist", "lin_m_dist", "lin_p_dist", "lin_m_std", "lin_p_std")
-# convert to numerica
+# convert to numerical
 dist_df <- dist_df %>% 
   mutate(across(6:9, as.numeric))
-# pivot longer for plotting
-dist_long <- dist_df %>% 
-  pivot_longer(cols = c(ave_dist, lin_m_dist, lin_p_dist), names_to = "type", values_to = "average_distance") %>% 
-  mutate(labels = case_when(type == "ave_dist" ~ "All",
-                            type == "lin_m_dist" ~ "lin-",
-                            type == "lin_p_dist" ~ "lin+"))
-# add which combo dist measure is for instead of chemotype of indiv plants
-dist_long <- dist_long %>% 
-  mutate(combos = paste(chemotype, type, sep = "_"))
 
-# anova models
-amod<-aov(average_distance ~ type, data = dist_long)
-summary(amod) # p = 0.019
-TukeyHSD(amod) # lin+ diff than lin-, p = 0.014
-
-amod2 <- aov(average_distance ~ type * chemotype, data = dist_long)
-summary(amod2) # both sig
-
-# with all combinations
-amod3 <- aov(average_distance ~ combos, data = dist_long)
-summary(amod3)
-TukeyHSD(amod3)
-
-par(mfrow=c(2,2))
-plot(amod3)
-par(mfrow=c(1,1))
-
-# rename chemotypes for figure
+# rename chemotypes for labeling
 dist_long <- dist_long %>% 
   mutate(chemCode = case_when(chemotype == 0 ~ "lin- plants",
                               chemotype == 1 ~ "lin+ plants"))
 
-# plot distances across range
-rangeChemDist <- ggplot(dist_long, aes(labels, average_distance/1000))+
-  geom_boxplot(fill="lightgrey", color = "grey43", width = 0.3)+
-  theme_bw()+
-  labs(x ="", y = "Distance (km)")+
-  facet_wrap(vars(chemCode))
 
 # calculate summary distances
 dist_long %>% 
@@ -152,6 +127,7 @@ std_all_rouse <- rouse_dist_num %>%
   summarise(across(3:last_col(), sd)) %>% 
   t()
 
+# add between chemotype mating distances (not included in manuscript)
 lin_dist_rouse <- rouse_dist_num %>% 
   group_by(chemotype) %>% 
   summarise(across(2:last_col(), mean)) %>% 
@@ -185,37 +161,7 @@ rouse_dist_long <- rouse_dist_df %>%
 rouse_dist_long <- rouse_dist_long %>% 
   mutate(combos = paste(chemotype, type, sep = "_"))
 
-# anova model
-amod3Rouse <- aov(average_distance ~ combos, data = rouse_dist_long)
-summary(amod3Rouse)
-TukeyHSD(amod3Rouse)
-
-par(mfrow=c(2,2))
-plot(amod3Rouse)
-par(mfrow=c(1,1))
-
-# change chemotype names for labels on plot
-rouse_dist_long <- rouse_dist_long %>% 
-  mutate(chemCode = case_when(chemotype == 0 ~ "lin- plants",
-                              chemotype == 1 ~ "lin+ plants"))
-
-# plot ave distances within rouse
-rouseChemDist <-ggplot(rouse_dist_long, aes(labels, average_distance))+
-  geom_boxplot(fill="lightgrey", color = "grey43", width = 0.3)+
-  theme_bw()+
-  labs(x ="", y = "Distance (m)")+
-  facet_wrap(vars(chemCode))
-
-# plot range and rouse together
-rangeChemDist / rouseChemDist
-
-ggplot(rouse_dist_long, aes(labels, average_distance))+
-  geom_violin(fill="lightgrey", color = "grey43")+
-  theme_bw()+
-  labs(x ="", y = "Distance (m)")+
-  facet_wrap(vars(chemotype))
-
-# calculate summary
+# calculate summary within Rouse by chemotype
 rouse_dist_long %>% 
   group_by(type, chemotype) %>% 
   summarise(average = mean(average_distance),
@@ -223,40 +169,8 @@ rouse_dist_long %>%
             sd = sd(average_distance),
             se = sd/sqrt(n))
 
-# distance chemotype by cross ####
-# change data for plot labels
-by_mat <-  by_mat %>% 
-  mutate(patchemotype = case_when(patchem == 0 ~ "lin-",
-                                  patchem == 1 ~ "lin+"),
-         matchemotype = case_when(matchem == 0 ~ "lin- maternal lines",
-                                  matchem == 1 ~ "lin+ maternal lines"))
 
-# plot for range
-mateDistRange<-ggplot(by_mat[!is.na(by_mat$patchem),], aes(patchemotype, dist/1000))+
-  geom_boxplot(fill = "lightgrey", color = "grey43", width = 0.3)+
-  theme_bw()+
-  labs(x = "Pollen donor chemotype", y = "Distance (km)")+
-  facet_wrap(vars(matchemotype))
 
-# plot for rouse
-mateDistRouse<-ggplot(by_mat[!is.na(by_mat$patchem) & by_mat$site == "Rouse",], aes(patchemotype, dist))+
-  geom_boxplot(fill = "lightgrey", color = "grey43", width = 0.3)+
-  theme_bw()+
-  labs(x = "Pollen donor chemotype", y = "Distance (m)")+
-  facet_wrap(vars(matchemotype))
-
-#mateDistBTWpops<-ggplot(by_mat[!is.na(by_mat$patchem) & by_mat$site != "Rouse",], aes(as.factor(patchem), dist))+
-#  geom_boxplot(fill = "lightgrey", color = "grey43", width = 0.3)+
-#  theme_bw()+
-#  labs(x = "Pollen donor chemotype", y = "Distance (m) between\n inter-population mating pairs")+
-#  facet_wrap(vars(as.factor(matchem)))
-
-mateDistRange / mateDistRouse 
-
-# all together for figure 5
-ggarrange(rangeChemDist, mateDistRange, rouseChemDist, mateDistRouse, nrow = 2, ncol = 2, labels = c("A", "B", "C", "D"))
-
-####
 
 
 
