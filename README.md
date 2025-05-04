@@ -1,9 +1,7 @@
 # Data and code for Ecology manuscript
-Haley Carter
 
 This repository houses data and code associated with the manuscript 
 "Hawkmoths provide extensive long-distance pollen dispersal to a small population of a rare evening primrose" 
-by Haley S. Carter, Robert A. Raguso, Jeremie B. Fant, Maria Sol Balbuena, Geoffrey T. Broadhead, and Krissa A. Skogen.
 
 # Data
 * by\_maternal.csv All mating pairs with number of offspring and linalool chemotype information for both parental individuals. 
