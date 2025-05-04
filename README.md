@@ -1,7 +1,7 @@
 # Data and code for Ecology manuscript
 
 This repository houses data and code associated with the manuscript 
-"Hawkmoths provide extensive long-distance pollen dispersal to a small population of a rare evening primrose" 
+"Hawkmoths provide extensive long-distance pollen dispersal to a small population of a rare evening primrose". 
 
 # Data
 * by\_maternal.csv All mating pairs with number of offspring and linalool chemotype information for both parental individuals. 
