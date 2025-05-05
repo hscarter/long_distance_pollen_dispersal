@@ -1,5 +1,4 @@
 # Create map of Rouse with plants colored by linalool phenotype ####
-# Haley Carter
 
 # This code creates panel B of figure 1, panel A was created in illustrator.
 

@@ -1,5 +1,4 @@
 # Calculate distances between plants and mating pairs ####
-# Haley Carter
 
 # note this code also includes some explorating of mating distances
 # by chemotype which was not included in the manuscript

@@ -1,5 +1,4 @@
 #### Separate Rouse and other populations, look at proportion of lin+ in pops and flow to maternal plants in Rouse ####
-# Haley Carter
 
 # libraries
 library(dplyr)

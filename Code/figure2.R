@@ -1,5 +1,4 @@
 #### Figure 2 ####
-# Haley Carter
 
 # libraries
 library(tidyverse)

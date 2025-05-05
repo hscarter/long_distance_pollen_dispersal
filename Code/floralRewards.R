@@ -1,5 +1,4 @@
 # Mixed effects models of floral rewards ####
-# Haley Carter
 
 # file paths ####
 scent_data <- "Data/scent_data.csv"

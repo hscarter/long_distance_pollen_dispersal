@@ -1,5 +1,4 @@
 # This code contains anosim analysis of morphology data by chemotype, and by population ####
-# Haley Carter
 
 # file paths:
 scent_data <- "Data/scent_data.csv"
